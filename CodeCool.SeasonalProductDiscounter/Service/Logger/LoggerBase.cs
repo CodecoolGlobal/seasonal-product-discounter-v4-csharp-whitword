@@ -9,7 +9,7 @@ public abstract class LoggerBase : ILogger
 
     public void LogError(string message)
     {
-        //
+        LogMessage(message, "ERROR");
     }
 
     protected static string CreateLogEntry(string message, string type) => $"[{DateTime.Now}] {type}: {message}";

@@ -4,6 +4,7 @@ public class FileLogger : LoggerBase
 {
     private readonly string _logFile;
 
+
     public FileLogger(string logFile)
     {
         _logFile = logFile;
@@ -12,5 +13,6 @@ public class FileLogger : LoggerBase
     protected override void LogMessage(string message, string type)
     {
         //use File.AppendText to write messages
+        File.AppendText(_logFile).WriteLine(CreateLogEntry(message, type));
     }
 }
