@@ -51,6 +51,10 @@ public abstract class SqLiteConnector
     protected bool ExecuteNonQuery(IEnumerable<string> queries)
     {
         //Implement it similarly to the above function
+        foreach (string query in queries)
+        {
+            ExecuteNonQuery(query);
+        }
         return true;
     }
 }
