@@ -69,7 +69,7 @@ public class ProductRepository : SqLiteConnector, IProductRepository
     public bool SetProductAsSold(Product product)
     {
         //Set the sold field in the database
-        var query = @$"UPDATE {_tableName} SET sold = {product.Sold} WHERE id = {product.Id}";
+        var query = @$"UPDATE {_tableName} SET sold = {product.Sold} WHERE p_id = {product.Id}";
         return ExecuteNonQuery(query);
     }
 }

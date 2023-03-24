@@ -12,7 +12,7 @@ public class DatabaseManager : SqLiteConnector, IDatabaseManager
 
     private const string ProductsTableStatement = 
         @$"CREATE TABLE IF NOT EXISTS {ProductsTableName} (
-	                id INTEGER PRIMARY KEY,
+	                p_id INTEGER PRIMARY KEY,
 	                product_name TEXT NOT NULL,
 	                color TEXT NOT NULL,
 	                season TEXT NOT NULL,
@@ -22,14 +22,14 @@ public class DatabaseManager : SqLiteConnector, IDatabaseManager
 
     private const string UsersTableStatement = 
         @$"CREATE TABLE IF NOT EXISTS {UsersTableName} (
-	                id INTEGER PRIMARY KEY,
+	                u_id INTEGER PRIMARY KEY,
 	                user_name TEXT NOT NULL UNIQUE,
 	                password TEXT NOT NULL
         );";
 
     private const string TransactionsTableStatement =
         @$"CREATE TABLE IF NOT EXISTS {TransactionsTableName} (
-	                id INTEGER PRIMARY KEY,
+	                t_id INTEGER PRIMARY KEY,
 	                date TEXT NOT NULL,
 	                user_id INTEGER NOT NULL,
 	                product_id INTEGER NOT NULL,
