@@ -41,25 +41,8 @@ public class UserRepository : SqLiteConnector, IUserRepository
 
     public bool Add(User user)
     {
-        var query = @$"INSERT INTO {DatabaseManager.UsersTableName} (`user_name`, `password`) VALUES(@userName, @password)";
-        try
-        {
-            using var connection = GetPhysicalDbConnection();
-            using var command = GetCommand(query, connection);
-            using var reader = command.ExecuteReader();
-            SqliteCommand myCommand = new SqliteCommand(query, connection);
-            myCommand.Parameters.AddWithValue("@userName", user.UserName);
-            myCommand.Parameters.AddWithValue("@password", user.Password);
-            myCommand.ExecuteNonQuery();
-            //connection.Close();
-
-        }
-        catch (Exception e)
-        {
-            Logger.LogError(e.Message);
-            throw;
-        }
-        return false;
+        var query = @$"INSERT INTO {DatabaseManager.UsersTableName} (`user_name`, `password`) VALUES('{user.UserName}', '{user.Password}')";
+        return ExecuteNonQuery(query);
     }
 
     public User Get(string name)
