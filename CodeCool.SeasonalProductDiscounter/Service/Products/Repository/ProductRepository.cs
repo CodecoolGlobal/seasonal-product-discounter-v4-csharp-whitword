@@ -38,7 +38,7 @@ public class ProductRepository : SqLiteConnector, IProductRepository
                 var product = new Product(uint.Parse(reader.GetString(0)), reader.GetString(1),
                     TypeConverters.GetColorEnum(reader.GetString(2)), TypeConverters.GetSeasonEnum(reader.GetString(3)),
                     TypeConverters.ToDouble(reader.GetDecimal(4)), reader.GetBoolean(5));
-                ret.Add(product);
+                if(!product.Sold) ret.Add(product);
             }
         }
         catch (Exception e)
@@ -52,6 +52,7 @@ public class ProductRepository : SqLiteConnector, IProductRepository
 
     public bool Add(IEnumerable<Product> products)
     {
+        var queries = new List<string>();
        foreach (var product in products)
         {
             var query = @$"INSERT INTO {_tableName} (product_name, color, season, price, sold) 
@@ -61,15 +62,15 @@ public class ProductRepository : SqLiteConnector, IProductRepository
                 '{product.Price}',
                '{product.Sold}')";
 
-            return ExecuteNonQuery(query);
+            queries.Add(query);
         }
-        return false;
+        return ExecuteNonQuery(queries);
     }
 
     public bool SetProductAsSold(Product product)
     {
         //Set the sold field in the database
-        var query = @$"UPDATE {_tableName} SET sold = {product.Sold} WHERE p_id = {product.Id}";
+        var query = @$"UPDATE {_tableName} SET sold = 'true' WHERE p_id = {product.Id}";
         return ExecuteNonQuery(query);
     }
 }
