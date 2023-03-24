@@ -52,29 +52,16 @@ public class ProductRepository : SqLiteConnector, IProductRepository
 
     public bool Add(IEnumerable<Product> products)
     {
-        var query = @$"INSERT INTO {_tableName} (`product_name`, `color`, `season`, `price`, `sold`) VALUES(@productName, @color, @season, @price, @sold)";
-        foreach(var product in products)
+       foreach (var product in products)
         {
-        try
-        {
-            using var connection = GetPhysicalDbConnection();
-            using var command = GetCommand(query, connection);
-            using var reader = command.ExecuteReader();
-            SqliteCommand myCommand = new SqliteCommand(query, connection);
-            myCommand.Parameters.AddWithValue("@productName", product.Name);
-            myCommand.Parameters.AddWithValue("@color", TypeConverters.ToString(product.Color));
-            myCommand.Parameters.AddWithValue("@season", TypeConverters.ToString(product.Season));
-            myCommand.Parameters.AddWithValue("@price", product.Price);
-            myCommand.Parameters.AddWithValue("@sold", product.Sold);
-            myCommand.ExecuteNonQuery();
-            //connection.Close();
+            var query = @$"INSERT INTO {_tableName} (product_name, color, season, price, sold) 
+                VALUES('{product.Name}',
+               '{TypeConverters.ToString(product.Color)}',
+               '{TypeConverters.ToString(product.Season)}',
+                '{product.Price}',
+               '{product.Sold}')";
 
-        }
-        catch (Exception e)
-        {
-            Logger.LogError(e.Message);
-            throw;
-        }
+            return ExecuteNonQuery(query);
         }
         return false;
     }
